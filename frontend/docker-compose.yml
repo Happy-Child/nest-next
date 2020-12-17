@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  frontend:
+    build: './'
+    environment:
+      - APP_INSTANCE=development
+    volumes:
+      - logs:/app/logs/
+    ports:
+      - '127.0.0.1:3000:3000'
+
+volumes:
+  logs:
