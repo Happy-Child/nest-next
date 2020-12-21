@@ -10,5 +10,16 @@ services:
     ports:
       - '127.0.0.1:8000:3000'
 
+  db:
+    image: mdillon/postgis:11
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=nest_next
+    volumes:
+      - ./_data:/var/lib/postgresql/data/
+    ports:
+      - "127.0.0.1:27179:5432"
+
 volumes:
   logs:
