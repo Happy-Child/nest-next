@@ -5,12 +5,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Expose, Transform } from 'class-transformer';
+import { Expose, Exclude, Transform } from 'class-transformer';
 import {
   IsEmail,
   IsEnum,
   IsMobilePhone,
   IsString,
+  IsBoolean,
   IsOptional,
   MinLength,
   MaxLength,
@@ -31,7 +32,7 @@ const transformPhoneNumber = (value) =>
     : value;
 
 const phoneErrorMessage = { message: ERRORS.INVALID_PHONE_NUMBER };
-const commonErrorMessage = { message: ERRORS.INVALID_VALUE };
+const commonErrorMessage = { field: null, message: ERRORS.INVALID_VALUE };
 
 @Entity()
 export class Users {
@@ -74,11 +75,22 @@ export class Users {
   @Column()
   password: string;
 
-  @Expose()
+  @IsOptional()
+  @IsBoolean(commonErrorMessage)
+  @Exclude()
+  @Column({ nullable: true })
+  verified: boolean;
+
+  @IsOptional()
+  @Exclude()
+  @Column({ type: 'integer', nullable: true })
+  previewAvatarId: number;
+
+  @Exclude()
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: string;
 
-  @Expose()
+  @Exclude()
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: string;
 

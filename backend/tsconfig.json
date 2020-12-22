@@ -23,6 +23,9 @@
       ],
       "@libs/exceptions": [
         "libs/exceptions/src"
+      ],
+      "@libs/auth": [
+        "libs/auth/src"
       ]
     }
   }

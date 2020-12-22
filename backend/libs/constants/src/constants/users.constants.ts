@@ -3,6 +3,10 @@ export enum USERS_SEXES {
   FEMALE = 'female',
 }
 
+export const COOKIE = {
+  ACCESS_TOKEN: 'Authorization',
+};
+
 export const MAX_NAME_LENGTH = 40;
 
 export const MAX_PASSWORD_LENGTH = 60;

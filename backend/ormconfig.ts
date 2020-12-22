@@ -3,8 +3,6 @@ import * as Entities from '@libs/entities';
 
 const entities = Object.values(Entities);
 
-console.log(entities);
-
 export default {
   type: 'postgres',
   host: 'localhost',

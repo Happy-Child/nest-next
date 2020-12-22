@@ -1,5 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import {
+  BadRequestException,
+  ValidationError,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AppModule } from './app.module';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -10,30 +14,37 @@ async function bootstrap() {
 
   app.use(helmet());
 
-  if (true) {
-    const corsOptions = {
-      origin: (origin, callback) => {
-        callback(null, true);
-      },
-      credentials: true,
-      methods: ['GET', 'PUT', 'POST', 'OPTIONS', 'DELETE', 'PATCH'],
-      headers: [
-        'x-user',
-        'X-Signature',
-        'accept',
-        'content-type',
-        'authorization',
-      ],
-    };
+  const corsOptions = {
+    origin: (origin, callback) => {
+      callback(null, true);
+    },
+    credentials: true,
+    methods: ['GET', 'PUT', 'POST', 'OPTIONS', 'DELETE', 'PATCH'],
+    headers: [
+      'x-user',
+      'X-Signature',
+      'accept',
+      'content-type',
+      'authorization',
+    ],
+  };
 
-    app.use(cors(corsOptions));
-  }
+  app.use(cors(corsOptions));
 
   app.setGlobalPrefix('api/v1');
 
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
+      exceptionFactory: (errors) => {
+        const result = errors.map(
+          ({ property: field, constraints: message }: ValidationError) => ({
+            field,
+            message,
+          }),
+        );
+        return new BadRequestException(result);
+      },
     }),
   );
 
